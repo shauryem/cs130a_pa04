@@ -133,25 +133,29 @@ void getMinDiceThrows(queueEntry move[], int N)
             q.push(curr);
 
         }
-         
-        for (int j=v+6; j >=(v+1); --j) 
-        { 
-        
-            if (j < N && !move[j].visited) 
+         else{
+            for (int j=v+6; j >=(v+1); --j) 
             { 
-
-                queueEntry a;
-                move[j].visited = true;
-                a.oldEntry = j;
-                a.nextEntry = j;
-                a.tookLadder = false;
-                a.tookSnake = false;
-                a.prevVertex.push_back(qe);
-                //parent[j] = qe; 
-                
-                q.push(a); 
+            
+                if (j < N && !move[j].visited) 
+                { 
+                    queueEntry a;
+                    move[j].visited = true;
+                    
+                        
+                    
+                        a.oldEntry = j;
+                        a.nextEntry = j;
+                        a.tookLadder = false;
+                        a.tookSnake = false;
+                        a.prevVertex.push_back(qe);
+                        //parent[j] = qe; 
+                        
+                        q.push(a); 
+                    
+                } 
             } 
-        } 
+         }
        
     }   
     
@@ -193,10 +197,10 @@ void bfs(vector<int> temp1, vector<int> tempLadder, vector<int> tempSnakes){
         moves[tempSnakes[i]].snakeIndex = tempSnakes[i+1];     
     } 
 
-    // for(int i =1;i< boardSize; i++){
-    //     cout<<moves[i].nextEntry;
-    //     cout<<" ";
-    // }
+    //  for(int i =1;i< boardSize; i++){
+    //      cout<<moves[i].oldEntry;
+    //      cout<<" ";
+    //  }
 
     getMinDiceThrows(moves, boardSize);
       //cout<<result;
