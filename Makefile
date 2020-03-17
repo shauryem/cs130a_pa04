@@ -1,4 +1,4 @@
 All: snl
 
-snl: snakes.cpp
-	g++ -o snl snakes.cpp
+snl: snek.cpp
+	g++ -o snl snek.cpp

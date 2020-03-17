@@ -18,13 +18,18 @@ class snakes{
 struct oldTracker
 {
     int old = -1;
-    vector<int> ladderOptions;
+    int ladderOptions;
     bool isSnake;
 };
+
 struct queueEntry 
 { 
-    int v;     
-    int dist; 
+    int v;  
+    int old;   
+    int dist;
+    bool visited;
+    int ladderIndex;
+    int snakeIndex; 
     vector<int> options;  
 }; 
 
@@ -39,6 +44,7 @@ int getMinDiceThrows(oldTracker move[], int N)
         visited[i] = false;
         parent[i] = -1; 
     }
+  
 
     queue<queueEntry> q; 
      
@@ -70,7 +76,7 @@ int getMinDiceThrows(oldTracker move[], int N)
                 a.options.push_back(qe.v);
   
                 if (move[j].old != -1) 
-                    a.v = move[j].ladderOptions[0]; 
+                    a.v = move[j].ladderOptions; 
                 else
                     a.v = j; 
                 q.push(a); 
@@ -105,8 +111,19 @@ int getMinDiceThrows(oldTracker move[], int N)
    */
     qe.options.push_back(N-1);
   for(int i=0; i < qe.options.size();i++){
+      /*
+      cout<<qe.options[i];
+      cout<<" ";
+      
+      
+      if(move[qe.options[i]].ladderOptions != -1){
+          cout<<move[i].old;
+          cout<<"+";
+      }
+      */
       cout<<qe.options[i]+1;
       cout<<" ";
+      
   }
     cout<<"\n";
      
@@ -128,27 +145,30 @@ void bfs(vector<int> temp1, vector<int> tempLadder, vector<int> tempSnakes){
        
     }
 
+    for(int i=0; i < tempSnakes.size(); i = i+2){
+        moves[tempSnakes[i]-1] = tempSnakes[i+1]-1;
+        movesTwo[tempSnakes[i]-1].old = tempSnakes[i]-1;
+        movesTwo[tempSnakes[i]-1].ladderOptions = tempSnakes[i+1]-1;
+        movesTwo[tempSnakes[i]-1].isSnake = true;        
+    }
+
     for(int i=0; i < tempLadder.size(); i = i+2){
         moves[tempLadder[i]-1] = tempLadder[i+1] -1;
         movesTwo[tempLadder[i]-1].old = tempLadder[i]-1;
-        movesTwo[tempLadder[i]-1].ladderOptions.push_back(tempLadder[i+1]-1);
+        movesTwo[tempLadder[i]-1].ladderOptions = tempLadder[i+1]-1;
         movesTwo[tempLadder[i]-1].isSnake = false;
 
     }
 
-    for(int i=0; i < tempSnakes.size(); i = i+2){
-        moves[tempSnakes[i]-1] = tempSnakes[i+1]-1;
-        movesTwo[tempSnakes[i]-1].old = tempSnakes[i]-1;
-        movesTwo[tempSnakes[i]-1].ladderOptions.push_back(tempSnakes[i+1]-1);
-        movesTwo[tempSnakes[i]-1].isSnake = true;        
-    } 
+ 
 
-/*
-    for(int i=0;i<boardSize;i++){
-        cout<<moves[i];
+    for(int i=0; i < boardSize; i++){
+        cout<<movesTwo[i].old;
         cout<<" ";
-    }   
-*/
+    }
+
+      
+
     int result = getMinDiceThrows(movesTwo, boardSize);
       //cout<<result;
    
@@ -197,7 +217,7 @@ void parseCommand(string a){
         while( ssSnakes >> word){
             tempSnakes.push_back(stoi(word));
         }
-        cout<<"Board Game #1: ";
+        cout<<"Board Game #1:";
         cout<<"\n";
         bfs(temp1, tempLadders, tempSnakes);
 
