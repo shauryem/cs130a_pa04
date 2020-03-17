@@ -37,9 +37,9 @@ class queueEntry
 void printPath(queueEntry& qe){
 
     queueEntry temp = qe;
-    string output;
+    string output = "";
     vector<string> out;
-    int repeatCheck;
+    int repeatCheck = -1;
     while(temp.prevVertex.size() != 0){
        if(temp.oldEntry != temp.nextEntry && temp.tookLadder){
            string s;
@@ -213,7 +213,7 @@ void parseCommand(string a){
 
     //vector<string> inputVec = StringToLines(a);
     std::vector<std::string> inputVec;
-    std::string temp;
+    std::string temp = "";
     int markbegin = 0;
     int markend = 0;
 
